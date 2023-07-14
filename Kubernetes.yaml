@@ -3,59 +3,47 @@ kind: Ingress
 metadata:
   name: cnat-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    ingress.kubernetes.io/enable-cors: "true"
 spec:
   # ingressClassName: nginx
   rules:
   - http:
       paths:
-      - path: /api(/|$)(.*)
+      - path: /api/(.*)
         pathType: Prefix
         backend:
           service:
-            name: cnat-api-gateway-loadbalancer
+            name: cnat-api-gateway-ip-cluster
             port:
               number: 8080
-      - path: /
+      - path: /(.*)
         pathType: Prefix
         backend:
           service:
-            name: cnat-web-app-nodeport
+            name: cnat-web-app-ip-cluster
             port:
-              number: 3000
+              number: 80
 ---
 
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: cnat-web-app-nodeport
+  name: cnat-api-gateway-ip-cluster
 spec:
   selector:
-    app: cnat-web-app
+    app: cnat-api-gateway
   ports:
   - protocol: TCP
-    port: 3000
+    port: 8080
 ---
 
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: cnat-user-service-nodeport
-spec:
-  selector:
-    app: cnat-user-service
-  ports:
-  - protocol: TCP
-    port: 8082
----
-
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: cnat-tracker-service-nodeport
+  name: cnat-tracker-service-ip-cluster
 spec:
   selector:
     app: cnat-tracker-service
@@ -68,41 +56,26 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cnat-api-gateway-loadbalancer
+  name: cnat-user-service-ip-cluster
 spec:
-  # type: LoadBalancer
   selector:
-    app: cnat-api-gateway
+    app: cnat-user-service
   ports:
   - protocol: TCP
-    port: 8080
-    # targetPort: 8080
-    # nodePort: 30080
+    port: 8082
 ---
 
 
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: cnat-web-app-deployment
-  labels:
-    app: cnat-web-app
+  name: cnat-web-app-ip-cluster
 spec:
-  replicas: 1
   selector:
-    matchLabels:
-      app: cnat-web-app
-  template:
-    metadata:
-      labels:
-        app: cnat-web-app
-    spec:
-      containers:
-      - name: some-cnat-web-app
-        image: cnat-web-app:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 3000
+    app: cnat-web-app
+  ports:
+  - protocol: TCP
+    port: 80
 ---
 
 
@@ -134,6 +107,31 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: cnat-tracker-service-deployment
+  labels:
+    app: cnat-tracker-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cnat-tracker-service
+  template:
+    metadata:
+      labels:
+        app: cnat-tracker-service
+    spec:
+      containers:
+      - name: some-cnat-tracker-service
+        image: cnat-tracker-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8081
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: cnat-user-service-deployment
   labels:
     app: cnat-user-service
@@ -159,24 +157,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cnat-tracker-service-deployment
+  name: cnat-web-app-deployment
   labels:
-    app: cnat-tracker-service
+    app: cnat-web-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cnat-tracker-service
+      app: cnat-web-app
   template:
     metadata:
       labels:
-        app: cnat-tracker-service
+        app: cnat-web-app
     spec:
       containers:
-      - name: some-cnat-tracker-service
-        image: cnat-tracker-service:latest
+      - name: some-cnat-web-app
+        image: cnat-web-app:latest
         imagePullPolicy: Never
         ports:
-        - containerPort: 8081
----
-            
+        - containerPort: 80
