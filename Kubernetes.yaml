@@ -16,7 +16,7 @@ spec:
           service:
             name: cnat-api-gateway-ip-cluster
             port:
-              number: 8080
+              number: 80
       - path: /(.*)
         pathType: Prefix
         backend:
@@ -36,7 +36,7 @@ spec:
     app: cnat-api-gateway
   ports:
   - protocol: TCP
-    port: 8080
+    port: 80
 ---
 
 
@@ -49,7 +49,7 @@ spec:
     app: cnat-tracker-service
   ports:
   - protocol: TCP
-    port: 8081
+    port: 80
 ---
 
 
@@ -62,7 +62,7 @@ spec:
     app: cnat-user-service
   ports:
   - protocol: TCP
-    port: 8082
+    port: 80
 ---
 
 
@@ -99,8 +99,15 @@ spec:
       - name: some-cnat-api-gateway
         image: cnat-api-gateway:latest
         imagePullPolicy: Never
+        env:
+        - name: CNAT_TRACKER_SERVICE_URI
+          value: http://cnat-tracker-service-ip-cluster
+        - name: CNAT_USER_SERVICE_URI
+          value: http://cnat-user-service-ip-cluster
+        - name: CNAT_KAFKA_URI
+          value: #host:9092
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 ---
 
 
@@ -124,8 +131,13 @@ spec:
       - name: some-cnat-tracker-service
         image: cnat-tracker-service:latest
         imagePullPolicy: Never
+        env:
+        - name: CNAT_TRACKER_SERVICE_MONGODB_URI
+          value: #mongodb://user:pass@host:27017
+        - name: CNAT_KAFKA_URI
+          value: #host:9092
         ports:
-        - containerPort: 8081
+        - containerPort: 80
 ---
 
 
@@ -149,8 +161,11 @@ spec:
       - name: some-cnat-user-service
         image: cnat-user-service:latest
         imagePullPolicy: Never
+        env:
+        - name: CNAT_USER_SERVICE_POSTGRES_URI
+          value: #jdbc:postgresql://host:5432/cnat-user-service-db
         ports:
-        - containerPort: 8082
+        - containerPort: 80
 ---
 
 
@@ -176,3 +191,4 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 80
+            
