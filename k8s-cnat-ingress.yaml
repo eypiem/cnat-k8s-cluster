@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cnat-ingress
+  namespace: cnat
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    ingress.kubernetes.io/enable-cors: "true"
+spec:
+  # ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /api/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: cnat-api-gateway-ip-cluster
+            port:
+              number: 80
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: cnat-web-app-ip-cluster
+            port:
+              number: 80
