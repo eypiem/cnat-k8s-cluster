@@ -35,7 +35,20 @@ spec:
         imagePullPolicy: Never
         env:
         - name: CNAT_USER_SERVICE_POSTGRES_URI
-          value: #jdbc:postgresql://host:5432/cnat-user-service-db
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: postgres_uri
+        - name: CNAT_USER_SERVICE_POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: postgres_username
+        - name: CNAT_USER_SERVICE_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: postgres_password
         ports:
         - containerPort: 80
 

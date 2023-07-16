@@ -40,6 +40,21 @@ spec:
           value: http://cnat-user-service-ip-cluster
         - name: CNAT_KAFKA_URI
           value: cnat-kafka-ip-cluster:9092
+        - name: CNAT_API_GATEWAY_KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: cnat-api-gateway_keystore_password
+        - name: CNAT_API_GATEWAY_JWT_KEY_ALIAS
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: cnat-api-gateway_jwt_key_alias
+        - name: CNAT_API_GATEWAY_JWT_KEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: cnat-api-gateway_jwt_key_password
         ports:
         - containerPort: 80
 

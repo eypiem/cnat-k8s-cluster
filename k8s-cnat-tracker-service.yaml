@@ -37,7 +37,15 @@ spec:
         - name: CNAT_KAFKA_URI
           value: cnat-kafka-ip-cluster:9092
         - name: CNAT_TRACKER_SERVICE_MONGODB_URI
-          value: #mongodb://user:pass@host:27017
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: monogdb_uri
+        - name: CNAT_TRACKER_SERVICE_MONGODB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: cnat-secrets
+              key: monogdb_database
         ports:
         - containerPort: 80
 
