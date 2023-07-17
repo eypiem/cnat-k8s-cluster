@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnat-tracker-db-svc
+  namespace: cnat
+spec:
+  clusterIP: None
+  selector:
+    app: cnat-tracker-db
+  ports:
+    - port: 27017
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cnat-tracker-db-statefulset
+  namespace: cnat
+spec:
+  selector:
+    matchLabels:
+      app: cnat-tracker-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cnat-tracker-db
+    spec:
+      containers:
+        - name: some-mongo
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: cnat-tracker-db-pvc
+              mountPath: /data/db
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cnat-secrets
+                  key: monogdb_username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cnat-secrets
+                  key: monogdb_password
+  volumeClaimTemplates:
+    - metadata:
+        name: cnat-tracker-db-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
