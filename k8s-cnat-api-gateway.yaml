@@ -36,7 +36,7 @@ spec:
             - name: CNAT_TRACKER_SERVICE_URI
               value: http://cnat-tracker-service-svc
             - name: CNAT_USER_SERVICE_URI
-              value: http://cnat-user-service-ip-cluster
+              value: http://cnat-user-service-svc
             - name: CNAT_KAFKA_URI
               value: cnat-kafka-ip-cluster:9092
             - name: CNAT_API_GATEWAY_KEYSTORE_PASSWORD
