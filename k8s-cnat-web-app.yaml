@@ -1,21 +1,20 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cnat-web-app-ip-cluster
+  name: cnat-web-app-svc
   namespace: cnat
 spec:
   selector:
     app: cnat-web-app
   ports:
-  - protocol: TCP
-    port: 80
+    - port: 80
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cnat-web-app-deployment
+  name: cnat-web-app-deploy
   namespace: cnat
   labels:
     app: cnat-web-app
@@ -30,10 +29,11 @@ spec:
         app: cnat-web-app
     spec:
       containers:
-      - name: some-cnat-web-app
-        image: cnat-web-app:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 80
-
----
+        - name: some-cnat-web-app
+          image: cnat-web-app:latest
+          imagePullPolicy: Never
+          env:
+            - name: REACT_APP_API_BASE_URL
+              value: http://localhost:8080/api
+          ports:
+            - containerPort: 80

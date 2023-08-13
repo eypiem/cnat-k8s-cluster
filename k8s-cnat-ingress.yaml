@@ -23,6 +23,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: cnat-web-app-ip-cluster
+                name: cnat-web-app-svc
                 port:
                   number: 80
