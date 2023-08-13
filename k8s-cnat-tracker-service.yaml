@@ -34,7 +34,7 @@ spec:
           imagePullPolicy: Never
           env:
             - name: CNAT_KAFKA_URI
-              value: cnat-kafka-ip-cluster:9092
+              value: cnat-kafka-svc:9092
             - name: CNAT_TRACKER_SERVICE_MONGODB_URI
               valueFrom:
                 secretKeyRef:
