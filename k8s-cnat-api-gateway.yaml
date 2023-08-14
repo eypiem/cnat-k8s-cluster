@@ -37,7 +37,7 @@ spec:
               value: http://cnat-tracker-service-svc
             - name: CNAT_USER_SERVICE_URI
               value: http://cnat-user-service-svc
-            - name: CNAT_KAFKA_WEB_APP_ORIGIN
+            - name: CNAT_WEB_APP_ORIGIN
               value: http://localhost:30080
             - name: CNAT_KAFKA_URI
               value: cnat-kafka-svc:9092
