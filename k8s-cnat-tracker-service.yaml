@@ -35,6 +35,10 @@ spec:
           env:
             - name: CNAT_KAFKA_URI
               value: cnat-kafka-svc:9092
+            - name: CNAT_KAFKA_TRACKER_DATA_TOPIC
+              value: tracker-data-register
+            - name: CNAT_TRACKER_SERVICE_KAFKA_CONSUMER_GROUP_ID
+              value: cnat-tracker-service
             - name: CNAT_TRACKER_SERVICE_MONGODB_URI
               valueFrom:
                 secretKeyRef:
