@@ -8,14 +8,13 @@ spec:
   selector:
     app: cnat-kafka
   ports:
-    - protocol: TCP
-      port: 9092
+    - port: 9092
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cnat-kafka-deployment
+  name: cnat-kafka-deploy
   namespace: cnat
   labels:
     app: cnat-kafka

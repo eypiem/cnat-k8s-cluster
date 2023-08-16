@@ -32,8 +32,5 @@ spec:
         - name: some-cnat-web-app
           image: cnat-web-app:latest
           imagePullPolicy: Never
-          env:
-            - name: REACT_APP_API_BASE_URL
-              value: http://localhost:8080/api
           ports:
             - containerPort: 80

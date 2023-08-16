@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cnat-configmap
+  namespace: cnat
+data:
+  cnat_kafka_tracker_data_topic: tracker-data-register
