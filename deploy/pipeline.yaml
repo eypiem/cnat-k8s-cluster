@@ -1,0 +1,9 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: cnat-k8s-cd
+description: CNAT Kubernetes configuration delivery pipeline
+serialPipeline:
+  stages:
+    - targetId: staging
+    - targetId: prod

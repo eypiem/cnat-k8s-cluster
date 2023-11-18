@@ -46,6 +46,15 @@ spec:
                 secretKeyRef:
                   name: cnat-secrets
                   key: postgres_database
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+              ephemeral-storage: 512Mi
+            limits:
+              memory: 512Mi
+              cpu: 250m
+              ephemeral-storage: 512Mi
   volumeClaimTemplates:
     - metadata:
         name: cnat-user-db-pvc

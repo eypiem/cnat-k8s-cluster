@@ -46,6 +46,15 @@ spec:
                 secretKeyRef:
                   name: cnat-secrets
                   key: monogdb_password
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 2000m
+              ephemeral-storage: 512Mi
+            limits:
+              memory: 1Gi
+              cpu: 2000m
+              ephemeral-storage: 512Mi
   volumeClaimTemplates:
     - metadata:
         name: cnat-tracker-db-pvc

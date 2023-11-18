@@ -1,0 +1,18 @@
+apiVersion: skaffold/v2beta16
+kind: Config
+metadata:
+  name: cnat-cluster-config
+deploy:
+  kubectl:
+    manifests:
+      - k8s/k8s-cnat-namespace.yaml
+      - k8s/k8s-cnat-secrets.yaml
+      - k8s/k8s-cnat-config-map.yaml
+      - k8s/k8s-cnat-tracker-db.yaml
+      - k8s/k8s-cnat-user-db.yaml
+      - k8s/k8s-cnat-kafka.yaml
+      - k8s/k8s-cnat-ingress.yaml
+      - k8s/k8s-cnat-api-gateway-hpa.yaml
+      - k8s/k8s-cnat-tracker-service-hpa.yaml
+      - k8s/k8s-cnat-user-service-hpa.yaml
+      - k8s/k8s-cnat-web-app-hpa.yaml

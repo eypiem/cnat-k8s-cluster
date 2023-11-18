@@ -5,24 +5,24 @@ metadata:
   name: cnat-ingress
   namespace: cnat
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    ingress.kubernetes.io/enable-cors: "true"
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.allow-http: "true"
 spec:
-  # ingressClassName: nginx
+  #ingressClassName: gce
   rules:
     - http:
         paths:
-          - path: /api/(.*)
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: cnat-api-gateway-svc
                 port:
-                  number: 80
-          - path: /(.*)
+                  number: 30080
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: cnat-web-app-svc
                 port:
-                  number: 80
+                  number: 30083

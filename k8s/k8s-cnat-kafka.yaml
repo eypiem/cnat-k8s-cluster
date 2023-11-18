@@ -9,6 +9,7 @@ spec:
     app: cnat-kafka
   ports:
     - port: 9092
+      targetPort: 9092
 
 ---
 apiVersion: apps/v1
@@ -56,3 +57,12 @@ spec:
             #  value: "true"
           ports:
             - containerPort: 9092
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 250m
+              ephemeral-storage: 2Gi
+            limits:
+              memory: 1Gi
+              cpu: 250m
+              ephemeral-storage: 2Gi
